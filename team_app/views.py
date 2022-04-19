@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
 from django.contrib.auth.models import User
-from .serializers import SigninSerializer, SignupSerializer
+
+from team_app.models import Semester
+from .serializers import SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
 from team_app import serializers
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
@@ -34,3 +36,12 @@ class SigninView(APIView):
             valid_data = serializer.data
             return Response(valid_data, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_401_UNAUTHORIZED)
+
+
+class SemesterListView(ListAPIView):
+    queryset = Semester.objects.all()
+    serializer_class = SemesterListSerializer
+
+
+class SemesterCreateView(CreateAPIView):
+    serializer_class = SemesterCreateSerializer

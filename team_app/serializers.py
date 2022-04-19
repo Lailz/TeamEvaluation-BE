@@ -3,6 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from team_app.models import Semester
+
 
 class SignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -47,3 +49,15 @@ class SigninSerializer(serializers.Serializer):
         token = str(payload.access_token)
         data["access"] = token
         return data
+
+
+class SemesterListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Semester
+        fields = ["id", "name", "slug"]
+
+
+class SemesterCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Semester
+        fields = ["name"]
