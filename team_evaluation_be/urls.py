@@ -13,5 +13,5 @@ urlpatterns = [
     # semesters
     path("semesters/create", views.SemesterCreateView.as_view(),
          name="semesters-create"),
-    path("semesters/", views.SemesterListView.as_view(), name="semesters-list"),
+    path("semesters", views.SemesterListView.as_view(), name="semesters-list"),
 ]
