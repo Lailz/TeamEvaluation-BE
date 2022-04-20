@@ -10,3 +10,14 @@ class Semester(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField()
+    semester = models.ForeignKey(
+        Semester, related_name="projects", on_delete=models.CASCADE, default=1)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
