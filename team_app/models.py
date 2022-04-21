@@ -1,3 +1,4 @@
+from sqlite3 import Date
 from django.db import models
 from django.utils.text import slugify
 # Create your models here.
@@ -6,6 +7,8 @@ from django.utils.text import slugify
 class Semester(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
