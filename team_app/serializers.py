@@ -68,4 +68,4 @@ class SemesterListSerializer(serializers.ModelSerializer):
 class SemesterCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Semester
-        fields = ["name"]
+        fields = ["id", "name", "slug"]
