@@ -32,7 +32,8 @@ class SigninView(APIView):
 
 
 class SemesterListView(ListAPIView):
-    queryset = Semester.objects.all()
+    queryset = Semester.objects.all().order_by("-created_at")
+    # .order_by("")
     serializer_class = SemesterListSerializer
 
 
