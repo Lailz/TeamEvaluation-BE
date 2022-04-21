@@ -12,7 +12,6 @@ from rest_framework.views import APIView
 # Create your views here.
 
 # TODO: Fix slugify in signup
-# TODO: Move token generation to views
 
 
 class SignupView(CreateAPIView):
@@ -33,9 +32,9 @@ class SigninView(APIView):
 
 class SemesterListView(ListAPIView):
     queryset = Semester.objects.all().order_by("-created_at")
-    # .order_by("")
     serializer_class = SemesterListSerializer
 
 
 class SemesterCreateView(CreateAPIView):
+    # def post(self, request):
     serializer_class = SemesterCreateSerializer
