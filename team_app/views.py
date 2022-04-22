@@ -1,6 +1,6 @@
 # DRF
 from rest_framework.generics import CreateAPIView, ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
@@ -10,7 +10,7 @@ from team_app.models import Semester
 from django.contrib.auth.models import User
 
 # Serializers
-from .serializers import SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
+from .serializers import ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
 
 
 # TODO: Fix slugify in signup
@@ -32,6 +32,7 @@ class SigninView(APIView):
 
 class SemesterListCreateView(ListCreateAPIView):
     queryset = Semester.objects.all().order_by("-created_at")
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kargs):
         return self.list(request, *args, **kargs)
@@ -44,7 +45,12 @@ class SemesterListCreateView(ListCreateAPIView):
             return SemesterCreateSerializer
         return SemesterListSerializer
 
+    # def perform_authentication(self, request):
+    #     if self.request.method == 'POST':
+
 
 class ProjectCreateView(CreateAPIView):
-    # serializer_class =
-    print("hi")
+    serializer_class = ProjectCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(semester_id=self.kwargs["semester_id"])
