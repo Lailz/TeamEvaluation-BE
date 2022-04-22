@@ -1,19 +1,19 @@
-from django.shortcuts import render
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
-from django.contrib.auth.models import User
-from rest_framework_simplejwt.tokens import RefreshToken
-from team_app.models import Semester
-from .serializers import SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
-from team_app import serializers
+# DRF
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 
-# Create your views here.
+# Models
+from team_app.models import Semester
+from django.contrib.auth.models import User
+
+# Serializers
+from .serializers import SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
+
 
 # TODO: Fix slugify in signup
-
-
 class SignupView(CreateAPIView):
     serializer_class = SignupSerializer
 
@@ -30,11 +30,21 @@ class SigninView(APIView):
         return Response(serializer.errors, status=HTTP_401_UNAUTHORIZED)
 
 
-class SemesterListView(ListAPIView):
+class SemesterListCreateView(ListCreateAPIView):
     queryset = Semester.objects.all().order_by("-created_at")
-    serializer_class = SemesterListSerializer
+
+    def get(self, request, *args, **kargs):
+        return self.list(request, *args, **kargs)
+
+    def post(self, request, *args, **kargs):
+        return self.create(request, *args, **kargs)
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return SemesterCreateSerializer
+        return SemesterListSerializer
 
 
-class SemesterCreateView(CreateAPIView):
-    # def post(self, request):
-    serializer_class = SemesterCreateSerializer
+class ProjectCreateView(CreateAPIView):
+    # serializer_class =
+    print("hi")

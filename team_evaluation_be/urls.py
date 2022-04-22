@@ -11,7 +11,9 @@ urlpatterns = [
     path("signin", views.SigninView.as_view(), name="signin"),
 
     # semesters
-    path("semesters/create", views.SemesterCreateView.as_view(),
-         name="semesters-create"),
-    path("semesters", views.SemesterListView.as_view(), name="semesters-list"),
+    path("semesters", views.SemesterListCreateView.as_view(), name="semesters"),
+
+    # projects
+    path("semesters/<int:semester_id>/projects",
+         views.ProjectCreateView.as_view(), name="projects-create")
 ]
