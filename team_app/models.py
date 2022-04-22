@@ -25,7 +25,7 @@ class Project(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)])
 
     semester = models.ForeignKey(
-        Semester, related_name="projects", on_delete=models.CASCADE, default=1)
+        Semester, related_name="projects", on_delete=models.CASCADE, default=1,  db_constraint=False)
 
     def __str__(self):
         return self.name
