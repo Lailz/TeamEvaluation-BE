@@ -49,10 +49,5 @@ class SemesterListCreateView(ListCreateAPIView):
 class ProjectCreateView(CreateAPIView):
     serializer_class = ProjectCreateSerializer
 
-    # def create(self, request, *args, **kwargs):
-    #     print("hi", self.request.body)
-    #     project = Project((*self.request.body, self.kwargs["semester_id"]))
-    #     print("hi2", project)
-    #     return {}
     def perform_create(self, serializer):
         serializer.save(semester_id=self.kwargs["semester_id"])

@@ -7,12 +7,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from team_app.models import Project, Semester, Team
 
 
-class SignupSerializer(serializers.ModelSerializer):
+class SignupSerializer(serializers.Serializer):
+    username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = User
-        fields = ["username", "password"]
+    token = serializers.CharField(allow_blank=True, read_only=True)
 
     def create(self, validated_data):
         username = validated_data['username']
@@ -83,14 +81,7 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
 
 
 class ProjectCreateSerializer(serializers.ModelSerializer):
-    # semester = serializers.Se
 
     class Meta:
         model = Project
         fields = ["id", "name", "slug", "weight", "semester"]
-
-    # def perform_create(self, **validated_data):
-    #     validated_data["semester"] = self.kwargs["semester_id"]
-    #     print("🚀 ~ file: serializers.py ~ line 92 ~ validated_data", validated_data)
-    #     project = Project.objects.create(validated_data)
-    #     return project
