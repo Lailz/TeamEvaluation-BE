@@ -6,7 +6,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 
 # Models
-from team_app.models import Semester
+from team_app.models import Project, Semester
 from django.contrib.auth.models import User
 
 # Serializers
@@ -49,5 +49,10 @@ class SemesterListCreateView(ListCreateAPIView):
 class ProjectCreateView(CreateAPIView):
     serializer_class = ProjectCreateSerializer
 
+    # def create(self, request, *args, **kwargs):
+    #     print("hi", self.request.body)
+    #     project = Project((*self.request.body, self.kwargs["semester_id"]))
+    #     print("hi2", project)
+    #     return {}
     def perform_create(self, serializer):
         serializer.save(semester_id=self.kwargs["semester_id"])

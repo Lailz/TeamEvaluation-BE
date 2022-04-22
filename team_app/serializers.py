@@ -83,6 +83,14 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
 
 
 class ProjectCreateSerializer(serializers.ModelSerializer):
+    # semester = serializers.Se
+
     class Meta:
         model = Project
         fields = ["id", "name", "slug", "weight", "semester"]
+
+    # def perform_create(self, **validated_data):
+    #     validated_data["semester"] = self.kwargs["semester_id"]
+    #     print("🚀 ~ file: serializers.py ~ line 92 ~ validated_data", validated_data)
+    #     project = Project.objects.create(validated_data)
+    #     return project
