@@ -45,9 +45,6 @@ class SemesterListCreateView(ListCreateAPIView):
             return SemesterCreateSerializer
         return SemesterListSerializer
 
-    # def perform_authentication(self, request):
-    #     if self.request.method == 'POST':
-
 
 class ProjectCreateView(CreateAPIView):
     serializer_class = ProjectCreateSerializer

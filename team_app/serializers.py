@@ -78,20 +78,6 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
 
 
 class ProjectCreateSerializer(serializers.ModelSerializer):
-    # semester = serializers.SerializerMethodField()
-
     class Meta:
         model = Project
         fields = ["id", "name", "slug", "weight", "semester"]
-        # extra_kwargs = {
-        #     'semester': {'lookup_field': 'semester_id'}
-        # }
-        # lookup_field = "id"
-
-    # def create(self, validated_data):
-    #     # print("self", self.kwargs)
-    #     project = Project.objects.create(**validated_data)
-    # #     print(project)
-    #     # project.semester_id = 44
-    #     # project.save()
-    #     return project
