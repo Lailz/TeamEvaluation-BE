@@ -1,3 +1,4 @@
+from asyncore import read
 from dataclasses import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -66,6 +67,17 @@ class SemesterListSerializer(serializers.ModelSerializer):
 
 
 class SemesterCreateSerializer(serializers.ModelSerializer):
+    projects = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Semester
-        fields = ["name"]
+        fields = ["id", "name", "slug", "projects"]
+
+    def get_projects(self, obj):
+        return []
+
+
+class ProjectCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ["id", "name", "slug", "weight", "semester"]

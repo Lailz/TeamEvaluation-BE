@@ -1,20 +1,19 @@
-from django.shortcuts import render
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
-from django.contrib.auth.models import User
-from rest_framework_simplejwt.tokens import RefreshToken
-from team_app.models import Semester
-from .serializers import SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
-from team_app import serializers
+# DRF
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 
-# Create your views here.
+# Models
+from team_app.models import Semester
+from django.contrib.auth.models import User
+
+# Serializers
+from .serializers import ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
+
 
 # TODO: Fix slugify in signup
-# TODO: Move token generation to views
-
-
 class SignupView(CreateAPIView):
     serializer_class = SignupSerializer
 
@@ -31,10 +30,24 @@ class SigninView(APIView):
         return Response(serializer.errors, status=HTTP_401_UNAUTHORIZED)
 
 
-class SemesterListView(ListAPIView):
-    queryset = Semester.objects.all()
-    serializer_class = SemesterListSerializer
+class SemesterListCreateView(ListCreateAPIView):
+    queryset = Semester.objects.all().order_by("-created_at")
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, *args, **kargs):
+        return self.list(request, *args, **kargs)
+
+    def post(self, request, *args, **kargs):
+        return self.create(request, *args, **kargs)
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return SemesterCreateSerializer
+        return SemesterListSerializer
 
 
-class SemesterCreateView(CreateAPIView):
-    serializer_class = SemesterCreateSerializer
+class ProjectCreateView(CreateAPIView):
+    serializer_class = ProjectCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(semester_id=self.kwargs["semester_id"])
