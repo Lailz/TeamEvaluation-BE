@@ -4,7 +4,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from team_app.models import Project, Semester
+from team_app.models import Project, Semester, Team
 
 
 class SignupSerializer(serializers.ModelSerializer):
@@ -23,7 +23,6 @@ class SignupSerializer(serializers.ModelSerializer):
         payload = RefreshToken.for_user(new_user)
         token = str(payload.access_token)
         validated_data["token"] = token
-        print(validated_data)
         return validated_data
 
 
@@ -52,10 +51,16 @@ class SigninSerializer(serializers.Serializer):
         return data
 
 
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ["id", "name", "slug"]
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "name", "slug"]
+        fields = ["id", "name", "slug", "teams"]
 
 
 class SemesterListSerializer(serializers.ModelSerializer):
