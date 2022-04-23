@@ -86,13 +86,15 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
 class ProjectListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "name", "slug", "weight", "semester", "teams"]
+        fields = ["id", "name", "slug", "weight",
+                  "semester", "teams", "criterias"]
 
 
 class ProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "name", "slug", "weight", "semester", "teams"]
+        fields = ["id", "name", "slug", "weight",
+                  "semester", "teams", "criterias"]
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):
