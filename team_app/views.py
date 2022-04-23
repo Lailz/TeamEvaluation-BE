@@ -6,11 +6,11 @@ from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 
 # Models
-from team_app.models import Project, Semester
+from team_app.models import Criteria, Project, Semester
 from django.contrib.auth.models import User
 
 # Serializers
-from .serializers import ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer, TeamCreateSerializer
+from .serializers import CriteriaListSerializer, ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer, TeamCreateSerializer
 from team_app import serializers
 
 
@@ -59,3 +59,9 @@ class TeamCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(project_id=self.kwargs["project_id"])
+
+
+class CriteriaListCreateView(ListCreateAPIView):
+    queryset = Criteria.objects.all().order_by("name")
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CriteriaListSerializer
