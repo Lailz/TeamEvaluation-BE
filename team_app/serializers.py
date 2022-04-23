@@ -56,7 +56,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    teams = TeamSerializer(many=True)
+    # teams = TeamSerializer(many=True)
 
     class Meta:
         model = Project
@@ -64,12 +64,12 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class SemesterListSerializer(serializers.ModelSerializer):
-    projects = ProjectSerializer(many=True)
+    # projects = ProjectSerializer(many=True)
 
     class Meta:
         model = Semester
         fields = ["id", "name", "slug", "projects"]
-        depth = 1
+        # depth = 1
 
 
 class SemesterCreateSerializer(serializers.ModelSerializer):
@@ -83,8 +83,13 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
         return []
 
 
-class ProjectCreateSerializer(serializers.ModelSerializer):
+class ProjectListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ["id", "name", "slug", "weight", "semester", "teams"]
 
+
+class ProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ["id", "name", "slug", "weight", "semester", "teams"]

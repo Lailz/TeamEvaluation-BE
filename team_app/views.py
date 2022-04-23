@@ -1,5 +1,5 @@
 # DRF
-from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
@@ -10,7 +10,7 @@ from team_app.models import Criteria, Project, Semester
 from django.contrib.auth.models import User
 
 # Serializers
-from .serializers import CriteriaListSerializer, ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer, TeamCreateSerializer
+from .serializers import CriteriaListSerializer, ProjectCreateSerializer, ProjectListSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer, TeamCreateSerializer
 from team_app import serializers
 
 
@@ -45,6 +45,11 @@ class SemesterListCreateView(ListCreateAPIView):
         if self.request.method == 'POST':
             return SemesterCreateSerializer
         return SemesterListSerializer
+
+
+class ProjectListView(ListAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectListSerializer
 
 
 class ProjectCreateView(CreateAPIView):
