@@ -18,11 +18,13 @@ class Semester(models.Model):
         super().save(*args, **kwargs)
 
 
-class Team(models.Model):
+class Project(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    weight = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)])
+    semester = models.ForeignKey(
+        Semester, related_name="projects", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -32,15 +34,13 @@ class Team(models.Model):
         super().save(*args, **kwargs)
 
 
-class Project(models.Model):
+class Team(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(blank=True, null=True)
-    weight = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(100)])
-
-    semester = models.ForeignKey(
-        Semester, related_name="projects", on_delete=models.CASCADE, null=True, blank=True)
-    teams = models.ManyToManyField(Team)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    project = models.ForeignKey(
+        Project, related_name="teams", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
