@@ -10,7 +10,8 @@ from team_app.models import Project, Semester
 from django.contrib.auth.models import User
 
 # Serializers
-from .serializers import ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer
+from .serializers import ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer, TeamCreateSerializer
+from team_app import serializers
 
 
 # TODO: Fix slugify in signup
@@ -51,3 +52,10 @@ class ProjectCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(semester_id=self.kwargs["semester_id"])
+
+
+class TeamCreateView(CreateAPIView):
+    serializer_class = TeamCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(project_id=self.kwargs["project_id"])

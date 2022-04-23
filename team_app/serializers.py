@@ -60,7 +60,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ["id", "name", "slug", "teams"]
+        fields = ["id", "semester",  "name", "slug", "teams", ]
 
 
 class SemesterListSerializer(serializers.ModelSerializer):
@@ -69,6 +69,7 @@ class SemesterListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Semester
         fields = ["id", "name", "slug", "projects"]
+        depth = 1
 
 
 class SemesterCreateSerializer(serializers.ModelSerializer):
@@ -86,10 +87,10 @@ class ProjectCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ["id", "name", "slug", "weight", "semester"]
+        fields = ["id", "name", "slug", "weight", "semester", "teams"]
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
-        fields = ["id", "name", "slug"]
+        fields = ["id", "name", "slug", "project"]
