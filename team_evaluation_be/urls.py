@@ -15,7 +15,11 @@ urlpatterns = [
 
     # projects
     path("semesters/<int:semester_id>/projects/",
-         views.ProjectCreateView.as_view(), name="projects-create")
-    # path("projects",
-    #      views.ProjectCreateView.as_view(), name="projects-create")
+         views.ProjectCreateView.as_view(), name="projects-create"),
+
+    # teams
+    path("projects/<int:project_id>/teams/",
+         views.TeamCreateView.as_view(), name="teams-create")
+
+
 ]

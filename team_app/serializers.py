@@ -4,15 +4,13 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from team_app.models import Project, Semester
+from team_app.models import Project, Semester, Team
 
 
-class SignupSerializer(serializers.ModelSerializer):
+class SignupSerializer(serializers.Serializer):
+    username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = User
-        fields = ["username", "password"]
+    token = serializers.CharField(allow_blank=True, read_only=True)
 
     def create(self, validated_data):
         username = validated_data['username']
@@ -23,7 +21,6 @@ class SignupSerializer(serializers.ModelSerializer):
         payload = RefreshToken.for_user(new_user)
         token = str(payload.access_token)
         validated_data["token"] = token
-        print(validated_data)
         return validated_data
 
 
@@ -52,10 +49,18 @@ class SigninSerializer(serializers.Serializer):
         return data
 
 
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ["id", "name", "slug"]
+
+
 class ProjectSerializer(serializers.ModelSerializer):
+    teams = TeamSerializer(many=True)
+
     class Meta:
         model = Project
-        fields = ["id", "name", "slug"]
+        fields = ["id", "semester",  "name", "slug", "teams", ]
 
 
 class SemesterListSerializer(serializers.ModelSerializer):
@@ -64,6 +69,7 @@ class SemesterListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Semester
         fields = ["id", "name", "slug", "projects"]
+        depth = 1
 
 
 class SemesterCreateSerializer(serializers.ModelSerializer):
@@ -78,6 +84,13 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
 
 
 class ProjectCreateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Project
-        fields = ["id", "name", "slug", "weight", "semester"]
+        fields = ["id", "name", "slug", "weight", "semester", "teams"]
+
+
+class TeamCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ["id", "name", "slug", "project"]
