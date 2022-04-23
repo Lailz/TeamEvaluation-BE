@@ -6,15 +6,20 @@ from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 
 # Models
-from team_app.models import Criteria, Project, Semester
-from django.contrib.auth.models import User
+from team_app.models import Criteria, Project, Semester, Team
 
-# Serializers
-from .serializers import CriteriaListSerializer, ProjectCreateSerializer, ProjectListSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer, TeamCreateSerializer
-from team_app import serializers
+# Auth Serializers
+from .serializers import SigninSerializer, SignupSerializer
+# Semester
+from .serializers import SemesterCreateSerializer, SemesterListSerializer
+# Project
+from .serializers import ProjectCreateSerializer, ProjectListSerializer
+# Team
+from .serializers import TeamCreateSerializer, TeamSerializer
+# Criteria
+from .serializers import CriteriaListSerializer
 
 
-# TODO: Fix slugify in signup
 class SignupView(CreateAPIView):
     serializer_class = SignupSerializer
 
@@ -57,6 +62,11 @@ class ProjectCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(semester_id=self.kwargs["semester_id"])
+
+
+class TeamListView(ListAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
 
 
 class TeamCreateView(CreateAPIView):

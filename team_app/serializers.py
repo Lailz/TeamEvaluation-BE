@@ -52,7 +52,7 @@ class SigninSerializer(serializers.Serializer):
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
-        fields = ["id", "name", "slug"]
+        fields = ["id", "name", "slug", "project"]
 
 
 class ProjectSerializer(serializers.ModelSerializer):

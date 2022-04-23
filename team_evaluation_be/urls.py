@@ -19,6 +19,7 @@ urlpatterns = [
          views.ProjectCreateView.as_view(), name="projects-create"),
 
     # teams
+    path("teams/", views.TeamListView.as_view(), name="names-list"),
     path("projects/<int:project_id>/teams/",
          views.TeamCreateView.as_view(), name="teams-create"),
 
