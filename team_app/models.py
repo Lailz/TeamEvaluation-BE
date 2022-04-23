@@ -48,3 +48,9 @@ class Team(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class Criteria(models.Model):
+    name = models.CharField(max_length=50)
+    weight = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(100)])
