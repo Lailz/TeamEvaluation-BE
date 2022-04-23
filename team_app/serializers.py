@@ -56,6 +56,8 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    teams = TeamSerializer(many=True)
+
     class Meta:
         model = Project
         fields = ["id", "name", "slug", "teams"]
@@ -85,3 +87,9 @@ class ProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ["id", "name", "slug", "weight", "semester"]
+
+
+class TeamCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ["id", "name", "slug"]
