@@ -4,7 +4,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from team_app.models import Project, Semester, Team
+from team_app.models import Criteria, Project, Semester, Team
 
 
 class SignupSerializer(serializers.Serializer):
@@ -52,11 +52,11 @@ class SigninSerializer(serializers.Serializer):
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
-        fields = ["id", "name", "slug"]
+        fields = ["id", "name", "slug", "project"]
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    teams = TeamSerializer(many=True)
+    # teams = TeamSerializer(many=True)
 
     class Meta:
         model = Project
@@ -64,12 +64,12 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class SemesterListSerializer(serializers.ModelSerializer):
-    projects = ProjectSerializer(many=True)
+    # projects = ProjectSerializer(many=True)
 
     class Meta:
         model = Semester
         fields = ["id", "name", "slug", "projects"]
-        depth = 1
+        # depth = 1
 
 
 class SemesterCreateSerializer(serializers.ModelSerializer):
@@ -83,14 +83,33 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
         return []
 
 
-class ProjectCreateSerializer(serializers.ModelSerializer):
-
+class ProjectListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "name", "slug", "weight", "semester", "teams"]
+        fields = ["id", "name", "slug", "weight",
+                  "semester", "teams", "criterias"]
+
+
+class ProjectCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ["id", "name", "slug", "weight",
+                  "semester", "teams", "criterias"]
 
 
 class TeamCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = ["id", "name", "slug", "project"]
+
+
+class CriteriaListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Criteria
+        fields = ["id", "name", "weight"]
+
+
+class CriteriaCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Semester
+        fields = ["id", "name", "weight"]

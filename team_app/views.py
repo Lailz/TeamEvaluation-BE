@@ -1,20 +1,25 @@
 # DRF
-from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 
 # Models
-from team_app.models import Project, Semester
-from django.contrib.auth.models import User
+from team_app.models import Criteria, Project, Semester, Team
 
-# Serializers
-from .serializers import ProjectCreateSerializer, SemesterCreateSerializer, SemesterListSerializer, SigninSerializer, SignupSerializer, TeamCreateSerializer
-from team_app import serializers
+# Auth Serializers
+from .serializers import SigninSerializer, SignupSerializer
+# Semester
+from .serializers import SemesterCreateSerializer, SemesterListSerializer
+# Project
+from .serializers import ProjectCreateSerializer, ProjectListSerializer
+# Team
+from .serializers import TeamCreateSerializer, TeamSerializer
+# Criteria
+from .serializers import CriteriaListSerializer
 
 
-# TODO: Fix slugify in signup
 class SignupView(CreateAPIView):
     serializer_class = SignupSerializer
 
@@ -47,6 +52,11 @@ class SemesterListCreateView(ListCreateAPIView):
         return SemesterListSerializer
 
 
+class ProjectListView(ListAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectListSerializer
+
+
 class ProjectCreateView(CreateAPIView):
     serializer_class = ProjectCreateSerializer
 
@@ -54,8 +64,19 @@ class ProjectCreateView(CreateAPIView):
         serializer.save(semester_id=self.kwargs["semester_id"])
 
 
+class TeamListView(ListAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+
+
 class TeamCreateView(CreateAPIView):
     serializer_class = TeamCreateSerializer
 
     def perform_create(self, serializer):
         serializer.save(project_id=self.kwargs["project_id"])
+
+
+class CriteriaListCreateView(ListCreateAPIView):
+    queryset = Criteria.objects.all().order_by("name")
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CriteriaListSerializer
