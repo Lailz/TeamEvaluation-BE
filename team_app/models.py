@@ -1,4 +1,3 @@
-from sqlite3 import Date
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -58,3 +57,14 @@ class Team(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class Report(models.Model):
+    grade = models.IntegerField()
+    team = models.ForeignKey(
+        Team, related_name="grades", on_delete=models.CASCADE,)
+    project = models.ForeignKey(
+        Project, related_name="grades", on_delete=models.CASCADE,)
+
+    def __str__(self):
+        return f"Team: {self.team}, Project: {self.project}"
