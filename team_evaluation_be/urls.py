@@ -7,8 +7,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
     # users
-    path("signup", views.SignupView.as_view(), name="signup"),
-    path("signin", views.SigninView.as_view(), name="signin"),
+    path("signup/", views.SignupView.as_view(), name="signup"),
+    path("signin/", views.SigninView.as_view(), name="signin"),
 
     # semesters
     path("semesters/", views.SemesterListCreateView.as_view(), name="semesters"),
