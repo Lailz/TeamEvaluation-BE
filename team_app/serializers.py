@@ -49,18 +49,18 @@ class SigninSerializer(serializers.Serializer):
         return data
 
 
-class TeamSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Team
-        fields = ["id", "name", "slug", "project"]
-
-
 class ProjectSerializer(serializers.ModelSerializer):
     # teams = TeamSerializer(many=True)
 
     class Meta:
         model = Project
         fields = ["id", "semester",  "name", "slug", "teams", ]
+
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ["id", "name", "slug", "project", "grades"]
 
 
 class SemesterListSerializer(serializers.ModelSerializer):
@@ -81,13 +81,6 @@ class SemesterCreateSerializer(serializers.ModelSerializer):
 
     def get_projects(self, obj):
         return []
-
-
-class ProjectListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ["id", "name", "slug", "weight",
-                  "semester", "teams", "criterias"]
 
 
 class ProjectCreateSerializer(serializers.ModelSerializer):
@@ -113,3 +106,12 @@ class CriteriaCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Semester
         fields = ["id", "name", "weight"]
+
+
+class ProjectListSerializer(serializers.ModelSerializer):
+    criterias = CriteriaListSerializer(many=True)
+
+    class Meta:
+        model = Project
+        fields = ["id", "name", "slug", "weight",
+                  "semester", "teams", "criterias"]
