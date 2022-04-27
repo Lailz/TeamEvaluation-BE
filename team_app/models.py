@@ -61,7 +61,7 @@ class Team(models.Model):
 
 class Report(models.Model):
     grade = models.IntegerField()
-    judge = models.CharField(max_length=50)
+    judge = models.CharField(max_length=50, default="Lailz")
     team = models.ForeignKey(
         Team, related_name="grades", on_delete=models.CASCADE)
     project = models.ForeignKey(
