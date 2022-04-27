@@ -61,10 +61,11 @@ class Team(models.Model):
 
 class Report(models.Model):
     grade = models.IntegerField()
+    judge = models.CharField(max_length=50)
     team = models.ForeignKey(
-        Team, related_name="grades", on_delete=models.CASCADE,)
+        Team, related_name="grades", on_delete=models.CASCADE)
     project = models.ForeignKey(
-        Project, related_name="grades", on_delete=models.CASCADE,)
+        Project, related_name="grades", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Team: {self.team}, Project: {self.project}"
+        return f"Team: {self.team}, Project: {self.project} - Judged by: {self.judge}"
